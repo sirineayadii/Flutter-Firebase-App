@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/firebase_options.dart';
+import 'package:frontend/home_page.dart';
 import 'package:frontend/signup_page.dart';
 
 void main() async {
@@ -37,14 +39,27 @@ class MyApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
-              // color: Pallete.gradient2,
               width: 3,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
-      home: const SignUpPage(),
+      home:  StreamBuilder(
+  
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data != null) {
+            return const MyHomePage();
+          }
+          return const SignUpPage();
+        }
+      ),
     );
   }
 }

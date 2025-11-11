@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/signup_page.dart';
 
@@ -23,7 +24,22 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  //login function firebase
+  Future<void> loginInWithEmailAndPassword() async {
+    try {
+      final UserCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      print(UserCredential);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
+  }
+
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -58,7 +74,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async{
+                  await loginInWithEmailAndPassword();
+                },
                 child: const Text(
                   'SIGN IN',
                   style: TextStyle(

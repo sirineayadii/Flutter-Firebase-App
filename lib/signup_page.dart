@@ -23,15 +23,19 @@ class _SignUpPageState extends State<SignUpPage> {
     passwordController.dispose();
     super.dispose();
   }
-  
+
   //function that registers a new user in Firebase Authentication using the entered email and password
   Future<void> createUserWithEmailAndPassword() async {
-    final UserCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-    print(UserCredential);
+    try {
+      final UserCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      print(UserCredential);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 
   @override
