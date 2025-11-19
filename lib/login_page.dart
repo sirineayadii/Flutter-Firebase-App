@@ -24,22 +24,20 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  //login function firebase
-  Future<void> loginInWithEmailAndPassword() async {
+  Future<void> loginUserWithEmailAndPassword() async {
     try {
-      final UserCredential =
+      final userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      print(UserCredential);
+      print(userCredential);
     } on FirebaseAuthException catch (e) {
       print(e.message);
     }
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -74,8 +72,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async{
-                  await loginInWithEmailAndPassword();
+                onPressed: () async {
+                  await loginUserWithEmailAndPassword();
                 },
                 child: const Text(
                   'SIGN IN',

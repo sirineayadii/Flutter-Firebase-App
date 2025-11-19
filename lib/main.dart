@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,10 @@ import 'package:frontend/home_page.dart';
 import 'package:frontend/signup_page.dart';
 
 void main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -16,7 +18,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance.collection('tasks').get();
     return MaterialApp(
       title: 'Task Management',
       theme: ThemeData(
@@ -41,14 +42,14 @@ class MyApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
+              // color: Pallete.gradient2,
               width: 3,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
-      home:  StreamBuilder(
-  
+      home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
             return const MyHomePage();
           }
           return const SignUpPage();
-        }
+        },
       ),
     );
   }
